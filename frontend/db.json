@@ -1,0 +1,78 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "username": "test",
+      "email": "sai@gmail.com",
+      "password": "sai123"
+    },
+    {
+      "id": "b3ed",
+      "email": "sai1@gmail.com",
+      "password": "sai123"
+    },
+    {
+      "id": "309d",
+      "email": "sai2@gmail.com",
+      "password": "sai123"
+    },
+    {
+      "id": "3140",
+      "email": "sai3@gmail.com",
+      "password": "sai123"
+    },
+    {
+      "id": "be0c",
+      "email": "sai4@gmail.com",
+      "password": "sai123"
+    },
+    {
+      "id": "f37b",
+      "email": "sai5@gmail.com",
+      "password": "sai123"
+    },
+    {
+      "id": "48cc",
+      "email": "sai6@gmail.com",
+      "password": "sai123"
+    },
+    {
+      "id": "cee6",
+      "email": "sai7@gmail.com",
+      "password": "sai123"
+    },
+    {
+      "id": "6465",
+      "email": "sai8@gmail.com",
+      "password": "sai123"
+    },
+    {
+      "id": "0304",
+      "email": "sai9@gmail.com",
+      "password": "sai123"
+    },
+    {
+      "id": "cad6",
+      "email": "sai10@gmail.com",
+      "password": "sai123"
+    }
+  ],
+  "repositories": [
+    {
+      "id": "1",
+      "name": "GitHub Clone",
+      "ownerId": 1
+    },
+    {
+      "id": "2",
+      "name": "AI Chatbot",
+      "ownerId": 1
+    },
+    {
+      "id": "3",
+      "name": "Weather App",
+      "ownerId": 2
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

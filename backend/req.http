@@ -1,0 +1,340 @@
+@baseUrl = http://localhost:2929/api
+
+
+### 🔍 Health
+GET http://localhost:2929/health
+
+
+
+### 🧑 AUTH ----------------------------
+
+### Register
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "rushikesh1",
+  "email": "rushikesh1@gmail.com",
+  "password": "123456"
+}
+
+
+### Login (cookie will be set automatically in browser/Postman)
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "rushikesh1@gmail.com",
+  "password": "123456"
+}
+
+
+### Get Profile
+GET {{baseUrl}}/auth/me
+
+
+### Update Profile
+PATCH {{baseUrl}}/auth/update-profile
+Content-Type: application/json
+
+{
+  "username": "rushikesh-updated"
+}
+
+
+### Change Password
+PUT {{baseUrl}}/auth/change-password
+Content-Type: application/json
+
+{
+  "currentPassword": "123456",
+  "newPassword": "654321"
+}
+
+
+### Logout
+GET {{baseUrl}}/auth/logout
+
+
+### Get All Users
+GET {{baseUrl}}/auth/users
+
+
+
+### 📦 REPOSITORIES --------------------
+
+### Create Repo
+POST {{baseUrl}}/repos
+Content-Type: application/json
+
+{
+  "name": "sample-repo1",
+  "description": "Sample desc1",
+  "visibility": "public"
+}
+
+
+### Get All Repos
+GET {{baseUrl}}/repos
+
+### get repos by owner
+GET {{baseUrl}}/repos/repos-owner/69bd95bc16dce60597a0910f
+
+
+### Get Repo
+GET {{baseUrl}}/repos/69b9154d0f969158e5c6f964
+
+
+### Update Repo
+PATCH {{baseUrl}}/repos/69b8eacd89e1e854ba4a96ed
+Content-Type: application/json
+
+{
+  "name": "updated-repo-name"
+}
+
+
+### Delete Repo
+DELETE {{baseUrl}}/repos/69b8eacd89e1e854ba4a96ed
+
+
+
+### 👥 COLLABORATORS -------------------
+
+### Add Collaborator
+POST {{baseUrl}}/repos/69b8eb7289e1e854ba4a96f8/collaborators
+Content-Type: application/json
+
+{
+  "userId": "69b7cc622a97f90866c47f2b",
+  "role": "collaborator"
+}
+
+
+### Get Collaborators
+GET {{baseUrl}}/repos/69b8eb7289e1e854ba4a96f8/collaborators
+
+
+### Update Role
+PATCH {{baseUrl}}/repos/69b8eb7289e1e854ba4a96f8/collaborators/69b7cc622a97f90866c47f2b
+Content-Type: application/json
+
+{
+  "role": "viewer"
+}
+
+
+### Remove Collaborator
+DELETE {{baseUrl}}/repos/69b7cc932a97f90866c47f33/collaborators/69b7cc622a97f90866c47f2b
+
+
+
+# ### 📁 FILES ---------------------------
+
+### Upload File
+# POST {{baseUrl}}/files/upload
+# Content-Type: multipart/form-data
+
+# file=@test.js
+# repository="69b9279b0f969158e5c6f994"
+
+
+# ### Upload Multiple Files
+# POST {{baseUrl}}/files/upload-multiple
+# Content-Type: multipart/form-data
+
+# files=@index.js
+# files=@app.js
+# repository={{repoId}}
+
+
+# ### Get Repo Files
+# GET {{baseUrl}}/files/repo/{{repoId}}
+
+
+# ### Get File
+# GET {{baseUrl}}/files/{{fileId}}
+
+
+# ### Update File
+# PUT {{baseUrl}}/files/{{fileId}}
+# Content-Type: multipart/form-data
+
+# file=@updated.js
+
+
+# ### Delete File
+# DELETE {{baseUrl}}/files/{{fileId}}
+
+
+
+### 📝 COMMITS -------------------------
+
+### Create Commit
+POST {{baseUrl}}/commits
+Content-Type: application/json
+
+{
+  "repository": "69b9154d0f969158e5c6f964",
+  "message": "Initial commit"
+}
+
+
+# ### Get Commits
+# GET {{baseUrl}}/commits/{{repoId}}
+
+
+# ### Get Commit
+# GET {{baseUrl}}/commits/id/{{commitId}}
+
+
+# ### Update Commit
+# PATCH {{baseUrl}}/commits/{{commitId}}
+# Content-Type: application/json
+
+# {
+#   "message": "Updated commit message"
+# }
+
+
+# ### Delete Commit
+# DELETE {{baseUrl}}/commits/{{commitId}}
+
+
+
+# ### 🔀 PULL REQUESTS -------------------
+
+### Create PR
+POST {{baseUrl}}/pull-requests
+ Content-Type: application/json
+
+ {
+   "repository": "69b9279b0f969158e5c6f994",
+   "title": "New Feature",
+   "description": "Added login feature"
+ }
+
+
+### Get PRs
+GET {{baseUrl}}/pull-requests/repo/69b9279b0f969158e5c6f994
+
+
+### Get PR
+GET {{baseUrl}}/pull-requests/69be84939e27d6d3d605ed83
+
+
+### Get PR By user
+GET {{baseUrl}}/pull-requests/author/69bd945616dce60597a09109
+
+### Get Incoming PR's
+GET {{baseUrl}}/pull-requests/incoming/69b8f480e2f3a64283339171
+
+### Get PR By Repos
+GET {{baseUrl}}/pull-requests/incoming/
+
+### Merge PR
+PUT {{baseUrl}}/pull-requests/merge/69be84939e27d6d3d605ed83
+
+
+### Close PR
+PATCH {{baseUrl}}/pull-requests/close/69bea9821988209b5aeb1ed0
+
+
+### Reopen PR
+PATCH {{baseUrl}}/pull-requests/reopen/69bea9821988209b5aeb1ed0
+
+
+### Update PR
+PATCH {{baseUrl}}/pull-requests/69bea9821988209b5aeb1ed0
+Content-Type: application/json
+
+{
+   "title": "Updated PR title"
+}
+
+
+### Delete PR
+DELETE {{baseUrl}}/pull-requests/69be84939e27d6d3d605ed83
+
+
+
+# ### 🐞 ISSUES --------------------------
+
+# ### Create Issue
+# POST {{baseUrl}}/issues
+# Content-Type: application/json
+
+# {
+#   "repository": "{{repoId}}",
+#   "title": "Bug in login",
+#   "description": "Login button not working"
+# }
+
+
+# ### Get Issues
+# GET {{baseUrl}}/issues/{{repoId}}
+
+
+# ### Get Issue
+# GET {{baseUrl}}/issues/id/{{issueId}}
+
+
+# ### Close Issue
+# PUT {{baseUrl}}/issues/close/{{issueId}}
+
+
+# ### Reopen Issue
+# PUT {{baseUrl}}/issues/reopen/{{issueId}}
+
+
+# ### Update Issue
+# PATCH {{baseUrl}}/issues/{{issueId}}
+# Content-Type: application/json
+
+# {
+#   "title": "Updated issue title"
+# }
+
+
+# ### Delete Issue
+# DELETE {{baseUrl}}/issues/{{issueId}}
+
+
+### Incoming Issue
+GET {{baseUrl}}/issues/incoming/69b8f480e2f3a64283339171
+
+
+
+# ### 💬 COMMENTS ------------------------
+
+# ### Add Comment
+# POST {{baseUrl}}/comments
+# Content-Type: application/json
+
+# {
+#   "issue": "{{issueId}}",
+#   "content": "I will fix this bug"
+# }
+
+
+### Get Comments
+GET {{baseUrl}}/comments/issue/69c040d7d0c15831bad5b175
+
+### Get Comments of PR
+GET {{baseUrl}}/comments/pr/69bed167588a759f2fdde520
+
+# ### Get Comment
+# GET {{baseUrl}}/comments/id/{{commentId}}
+
+
+# ### Update Comment
+# PATCH {{baseUrl}}/comments/{{commentId}}
+# Content-Type: application/json
+
+# {
+#   "content": "Updated comment"
+# }
+
+
+# ### Delete Comment
+# DELETE {{baseUrl}}/comments/{{commentId}}

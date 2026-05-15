@@ -1,0 +1,186 @@
+STACKED BARCHART
+BLUE:EAST
+ORANGE:NORTH
+PINK:SOUTH
+GREEN:WEST
+
+🔹 Step 1: Add Country field in Tableau (no Excel editing needed)
+
+In the Data pane, right-click anywhere
+
+Click Create Calculated Field
+
+Name it:
+Country
+
+Formula:
+
+"India"
+
+
+Click OK
+
+✔️ You have now created a Country field.
+
+🔹 Step 2: Assign Geographic Roles
+
+Right-click Country
+
+Geographic Role → Country/Region
+
+Right-click State
+
+Geographic Role → State/Province
+
+🔹 Step 3: Build the Map (THIS IS THE KEY PART)
+
+Double-click Country
+
+Drag State → Detail
+
+Drag Sales → Color
+
+Make sure:
+
+Columns → Longitude (generated)
+
+Rows → Latitude (generated)
+
+Marks type → Map
+
+✅ WHAT YOU WILL SEE NOW
+
+MongoDB Commands:
+
+
+1. Create Database use database-name
+
+> use database1
+
+2. Create collection(tables in RDBMS) 
+
+> db.createCollection("users") 
+
+-> Checking collections of database
+
+> show collections
+
+
+3.Insert Documents into that collection(rows inRDBMS) db.collection-name.insertOne(document) db.collection-name.insertMany([d1,d2,...]) Structure of a mongodb Document: { "name":"ravi", "age":21, "city":"hyderabad" }
+
+//Inserting one document using db.collection_name.insertOne()
+
+> db.users.insertOne({ name:"Alex",age:20,city:"Mumbai"})
+
+//Inserting multiple documents using db.collection_name.insertMany()
+
+> db.users.insertMany([{name:"stoinis",age:25,city:"sydney"},{name:"green",age:26,city:"mellbourne"}])
+
+4.Read Documents db.collection-name.findOne()
+
+ -> Query operators ( db.collection-name.findOne({field:{op:value}}))
+
+ -> $eq  (===)
+
+> db.users.findOne({name: {$eq: "alex"}})
+
+ -> $gt (>)
+
+> db.users.findOne({age : {$gt:19}})
+
+ -> $gte (>=)
+
+> db.users.findOne({age : {$gte:20}})
+
+ -> $lt  (<)
+
+> db.users.findOne({age : {$lt: 20}})              
+               
+ ->$lte (<=)
+
+> db.users.find({age : {$lte: 20}})
+
+ -> $ne  (!=)
+  
+> db.users.find({city : {$ne: "hyderabad"}})            
+               
+ -> $in
+
+> db.users.find({age : {$in: [19,20]}})
+
+ -> Logical operators (Join multiple conditions)
+
+ -> db.collection-name.find({$and:[cond-1,cond-2,...]})
+    
+ -> $and  (&&)  
+  
+> db.users.find({$and: [{age:{$gt: 18}},{age:{ $lt: 25}}]})
+
+ -> $or   (||)
+
+> db.users.find({$or: [{ age: { $eq: 18 } },{ city: "hyderabad"}]})
+              
+ ->  $not  (! )
+
+> db.users.find({ age: { $not: { $gt: 25}}})
+
+
+-> Update a document db.collection-name.updateOne(condition,update)
+
+> db.users.updateOne({ username:"alex" },{ $set: {age: 22}})
+
+ -> db.collection-name.updateMany(condition,update)
+
+> db.users.updateMany({city: "mumbai"},{ $set: { age: 30 }})
+
+ -> Delete a document db.collection-name.deleteOne(condition) 
+
+> db.users.deleteOne({ name: "Rahul" })
+
+ -> db.collection-name.deleteMany(condition)
+
+> db.users.deleteMany({ city: "sidipet" })
+
+ -> Reading from embeded document findOne/find({"main-field.nested-field":value})
+
+> db.emps.updateOne({eno:1},{ "address.city": "Hyderabad" });
+
+ ->  db.collection-name.updateMany(condition,update)
+
+> db.emps.updateMany({address.city: "hyderabad"},{$set:{addrress.street:"kphb"}})
+
+ -> Delete a document db.collection-name.deleteOne(condition) db.collection-name.deleteMany(condition)
+
+> db.emps.deleteOne({eno:1});
+
+ -> db.collection-name.deleteMany(condition)
+
+> db.emps.deleteMany({address.city: "Banglore"})
+
+ -> Reading from embeded document findOne/find({"main-field.nested-field":value})
+
+> db.emps.findOne({skills:3{"python"}})
+
+ ->find({"main-field.nested-field":value})
+
+> db.emps.find({address.street:"kphb"})
+
+ -> Reading from array a. Single element comparision findOne/find({array-fleid:"element"}) 
+
+> db.emps.findOne({skills:"react"})
+
+> db.emps.find({skills:"java"})
+
+ -> b. Multiple elements comparision findOne/find({array-field:{$all:[element1,element-2,....]}})
+
+> db.emps.find({skills:{$all : ["python","react","node"]}})
+
+> db.emps.find({skills:{$all : ["java","react","node,"python"]}})
+
+-> Update embedded document updateOne/updateMany(condition,{ $set:{"field.nested-field":value}})
+
+    updateOne/updateMany(condition,{ $unset:{"field.nested-field":""}})
+
+> db.emps.updateOne({eno:1},{$set: {name: "dhanesh"}})
+
+> db.emps.updateMany({eno:2},)

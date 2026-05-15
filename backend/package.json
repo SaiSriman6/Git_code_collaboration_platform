@@ -1,0 +1,35 @@
+{
+  "name": "github-style-code-collaboration-platform",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rushikesh-Banda/GitHub-Style-Code-Collaboration-Platform.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/Rushikesh-Banda/GitHub-Style-Code-Collaboration-Platform/issues"
+  },
+  "homepage": "https://github.com/Rushikesh-Banda/GitHub-Style-Code-Collaboration-Platform#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cloudinary": "^2.9.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.3.0",
+    "multer": "^2.1.1",
+    "simple-git": "^3.33.0",
+    "socket.io": "^4.8.3",
+    "streamifier": "^0.1.1"
+  }
+}
