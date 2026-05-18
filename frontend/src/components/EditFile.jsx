@@ -20,7 +20,7 @@ const EditFile = () => {
    try {
 
     const response = await axios.get(
-     `http://localhost:2929/api/files/${id}`,
+     `${import.meta.env.VITE_API_URL}/api/files/${id}`,
      { withCredentials: true }
     );
 
@@ -59,7 +59,7 @@ const EditFile = () => {
    setLoading(true);
 
    await axios.put(
-    `http://localhost:2929/api/files/${id}`,
+    `${import.meta.env.VITE_API_URL}/api/files/${id}`,
     {
      content,
      message: commitMessage  

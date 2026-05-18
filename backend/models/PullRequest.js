@@ -55,11 +55,26 @@ const pullRequestSchema = new mongoose.Schema(
 
     // Files changed (optional but useful)
     filesChanged: [
-      {
-        fileName: String,
-        fileUrl: String
-      }
-    ],
+    {
+     fileName: String,
+
+    oldContent: {
+      type: String,
+      default: ""
+    },
+
+    newContent: {
+      type: String,
+      default: ""
+    },
+
+    status: {
+      type: String,
+      enum: ["added", "modified", "deleted"],
+      default: "modified"
+    }
+    }
+   ],
 
     // Reviewers (optional)
     reviewers: [

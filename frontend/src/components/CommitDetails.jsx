@@ -14,7 +14,7 @@ function CommitDetails() {
   useEffect(() => {
     async function fetchCommit() {
       const res = await axios.get(
-        `http://localhost:2929/api/commits/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/commits/${id}`,
         { withCredentials: true }
       );
       setCommit(res.data);
@@ -25,7 +25,7 @@ function CommitDetails() {
   const updateMessage = async (data) => {
     try {
       const res = await axios.put(
-        `http://localhost:2929/api/commits/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/commits/${id}`,
         { message: data.message },
         { withCredentials: true }
       );
@@ -39,7 +39,7 @@ function CommitDetails() {
   const deleteCommit = async () => {
     try {
       await axios.delete(
-        `http://localhost:2929/api/commits/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/commits/${id}`,
         { withCredentials: true }
       );
       toast.success("Commit deleted");

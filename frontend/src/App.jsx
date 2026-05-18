@@ -36,6 +36,7 @@ import CommentSection from "./components/CommentSection";
 import AddFile from "./components/AddFile";
 import FileView from "./components/FileView";
 import EditFile from "./components/EditFile";
+import CreateBranch from "./components/CreateBranch";
 
 const router = createBrowserRouter([
   {
@@ -192,6 +193,10 @@ const router = createBrowserRouter([
         path: "/edit-file/:id",
         element: <EditFile />,
       },
+      {
+        path:"/create-branch",
+        element:<CreateBranch/>
+      }
     ],
   },
 ]);

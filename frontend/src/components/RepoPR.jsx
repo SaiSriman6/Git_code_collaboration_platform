@@ -12,7 +12,7 @@ function RepoPR() {
       try {
         setLoading(true);
         const res = await axios.get(
-          `http://localhost:2929/api/pull-requests/repo/${state?.repo?._id}`,
+          `${import.meta.env.VITE_API_URL}/api/pull-requests/repo/${state?.repo?._id}`,
           { withCredentials: true }
         );
         setPr(res.data); 

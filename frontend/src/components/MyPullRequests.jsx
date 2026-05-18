@@ -10,7 +10,7 @@ function MyPullRequests() {
   useEffect(() => {
     async function fetchPRs() {
       const res = await axios.get(
-        `http://localhost:2929/api/pull-requests/author/${currentUser._id}`,
+        `${import.meta.env.VITE_API_URL}/api/pull-requests/author/${currentUser._id}`,
         { withCredentials: true }
       );
       setPrs(res.data);

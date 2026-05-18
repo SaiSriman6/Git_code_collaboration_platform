@@ -15,7 +15,7 @@ function ChangePassword() {
   const OnChangePass=async(passObj)=>{
     try{
       setLoading(true);
-      let res= await axios.put("http://localhost:2929/api/auth/change-password",passObj,{withCredentials:true})
+      let res= await axios.put(`${import.meta.env.VITE_API_URL}/api/auth/change-password`,passObj,{withCredentials:true})
       if(res.status===200){
         toast.success("Password Updated Successfully");
         navigate(`/profile/${currentUser?.username}`)

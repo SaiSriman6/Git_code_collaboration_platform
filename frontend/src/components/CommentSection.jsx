@@ -24,14 +24,14 @@ function CommentSection({ issueId, pullRequestId }) {
       if (issueId) {
 
         res = await axios.get(
-          `http://localhost:2929/api/comments/issue/${issueId}`,
+          `${import.meta.env.VITE_API_URL}/api/comments/issue/${issueId}`,
           { withCredentials: true }
         );
 
       } else if (pullRequestId) {
 
         res = await axios.get(
-          `http://localhost:2929/api/comments/pr/${pullRequestId}`,
+          `${import.meta.env.VITE_API_URL}/api/comments/pr/${pullRequestId}`,
           { withCredentials: true }
         );
 
@@ -62,7 +62,7 @@ function CommentSection({ issueId, pullRequestId }) {
     try {
 
       await axios.post(
-        "http://localhost:2929/api/comments",
+        `${import.meta.env.VITE_API_URL}/api/comments`,
         {
           text: data.text,
           issue: issueId || null,
@@ -91,7 +91,7 @@ function CommentSection({ issueId, pullRequestId }) {
     try {
 
       await axios.put(
-        `http://localhost:2929/api/comments/${editingId}`,
+        `${import.meta.env.VITE_API_URL}/api/comments/${editingId}`,
         { text: data.text },
         { withCredentials: true }
       );
@@ -117,7 +117,7 @@ function CommentSection({ issueId, pullRequestId }) {
     try {
 
       await axios.delete(
-        `http://localhost:2929/api/comments/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/comments/${id}`,
         { withCredentials: true }
       );
 

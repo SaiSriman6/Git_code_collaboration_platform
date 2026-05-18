@@ -13,7 +13,7 @@ function AddRepo() {
  let createRepo=async(repoObj)=>{
      try{
         setLoading(true)
-        let res=await axios.post("http://localhost:2929/api/repos",repoObj,{withCredentials:true})
+        let res=await axios.post(`${import.meta.env.VITE_API_URL}/api/repos`,repoObj,{withCredentials:true})
         if(res.status===201){
            toast.success("Repo Created")
            navigate('/dashboard')

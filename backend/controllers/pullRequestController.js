@@ -157,18 +157,65 @@ export const getPRByUser = async(req,res) =>{
 
 export const mergePR = async (req, res) => {
   try {
+    // Find PR
     const pr = await PullRequest.findById(req.params.id);
-
     if (!pr) {
-      return res.status(404).json({ message: "Pull request not found" });
+      return res.status(404).json({
+        message: "Pull request not found"
+      });
     }
-
+    // Prevent duplicate merge
+    if (pr.status === "merged") {
+      return res.status(400).json({
+        message: "PR already merged"
+      });
+    }
+    // Get all files from source branch
+    const sourceFiles = await File.find({
+      repository: pr.repository,
+      branch: pr.sourceBranch
+    });
+    // Merge each file into target branch
+    for (const sourceFile of sourceFiles) {
+      // Check if file already exists in target branch
+      const targetFile = await File.findOne({
+        repository: pr.repository,
+        branch: pr.targetBranch,
+        name: sourceFile.name
+      });
+      // FILE EXISTS -> UPDATE
+      if (targetFile) {
+        targetFile.fileUrl = sourceFile.fileUrl;
+        targetFile.path = sourceFile.path;
+        await targetFile.save();
+      }
+      // FILE DOES NOT EXIST -> CREATE
+      else {
+        await File.create({
+          repository: pr.repository,
+          branch: pr.targetBranch,
+          name: sourceFile.name,
+          path: sourceFile.path,
+          fileUrl: sourceFile.fileUrl,
+          uploadedBy: sourceFile.uploadedBy
+        });
+      }
+    }
+    // Update PR status
     pr.status = "merged";
+    pr.mergedAt = new Date();
+    pr.mergedBy = req.user.id;
     await pr.save();
-
-    res.json(pr);
+    res.status(200).json({
+      success: true,
+      message: "Pull request merged successfully",
+      pr
+    });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({
+      success: false,
+      message: err.message
+    });
   }
 };
 

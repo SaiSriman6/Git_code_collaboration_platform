@@ -18,7 +18,7 @@ function Repositories() {
     async function getRepo(){
       try{
         setLoading(true);
-        let res=await axios.get(`http://localhost:2929/api/repos/repos-owner/${currentUser._id}`,
+        let res=await axios.get(`${import.meta.env.VITE_API_URL}/api/repos/repos-owner/${currentUser._id}`,
           {withCredentials:true}
         )
         if(res.status==200){      
@@ -34,6 +34,10 @@ function Repositories() {
     }
     getRepo()
 }, []);
+
+  const toNewRepo = () => {
+    navigate('/add-repo')
+  }
  
  if(loading){
   return <p>Loading....</p>
@@ -41,10 +45,17 @@ function Repositories() {
   
   return (
     <div className="p-6">
-
-      <h1 className="text-2xl font-bold mb-4">
+       <div className="max-w-6xl mx-auto mb-6 flex items-center justify-between">
+      <h1 className="text-3xl font-bold mb-4">
         Your Repositories
       </h1>
+      <button
+          onClick={toNewRepo}
+          className="bg-green-600 text-white px-2 py-2  rounded-lg font-semibold hover:bg-green-700 transition duration-200"
+        >
+          + New Repository
+        </button>
+       </div>
       {error && <p>{error}</p>}
       <div className="grid gap-4" >
         {

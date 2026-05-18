@@ -12,7 +12,7 @@ function IncomingIssues() {
     async function fetchIssues() {
       try {
         const res = await axios.get(
-          `http://localhost:2929/api/issues/incoming/${currentUser._id}`,
+          `${import.meta.env.VITE_API_URL}/api/issues/incoming/${currentUser._id}`,
           { withCredentials: true }
         );
         setIssues(res.data);

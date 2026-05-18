@@ -12,7 +12,7 @@ function Register() {
     const toRegister=async(userObj)=>{
         try{
             setLoading(true);
-            let res=await axios.post("http://localhost:2929/api/auth/register",userObj,{withCredentials:true})
+            let res=await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/register`,userObj,{withCredentials:true})
             if(res.status===201){
                toast.success("Registered Successfully");
                navigate("/login")

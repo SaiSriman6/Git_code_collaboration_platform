@@ -3,7 +3,7 @@ import axios from "axios";
 export const fetchRepositories = async () => {
   
     const res = await axios.get(
-      "http://localhost:2929/api/repos",{withCredentials:true}
+      `${import.meta.env.VITE_API_URL}/api/repos`,{withCredentials:true}
     );
     if (res.status !== 200) {
       throw new Error("Failed to fetch repositories");
@@ -14,7 +14,7 @@ export const fetchRepositories = async () => {
 
 export const fetchRepositoriesById = async(userId) =>{
   const res = await axios.get(
-    `http://localhost:2929/api/repos/repos-owner/${userId}`,
+    `${import.meta.env.VITE_API_URL}/api/repos/repos-owner/${userId}`,
     {withCredentials:true}
   )
   if(res.status !==200){

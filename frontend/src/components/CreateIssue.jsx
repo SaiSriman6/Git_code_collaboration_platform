@@ -11,7 +11,7 @@ function CreateIssue() {
   const createIssue = async (data) => {
     try {
       await axios.post(
-        "http://localhost:2929/api/issues",
+        `${import.meta.env.VITE_API_URL}/api/issues`,
         {
           repository: repo._id,
           ...data

@@ -9,7 +9,9 @@ import {
   addCollaborator,
   removeCollaborator,
   updateCollaboratorRole,
-  getCollaborators
+  getCollaborators,
+  changeVisibility,
+  createBranch
 } from "../controllers/repoController.js";
 
 import { verifyToken } from "../middlewares/verifyToken.js";
@@ -55,5 +57,10 @@ router.patch("/:id", verifyToken, updateRepo);
 // Delete repository
 router.delete("/:id", verifyToken, deleteRepo);
 
+// toggle visibility
+router.patch("/:id/visibility" , verifyToken , changeVisibility)
+
+// create branch
+router.post( "/:repoId/branches",verifyToken,createBranch); 
 
 export default router;

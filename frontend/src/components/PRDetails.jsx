@@ -19,7 +19,7 @@ function PRDetails() {
       try {
         setLoading(true);
         const res = await axios.get(
-          `http://localhost:2929/api/pull-requests/${id}`,
+          `${import.meta.env.VITE_API_URL}/api/pull-requests/${id}`,
           { withCredentials: true }
         );
         setPr(res.data);
@@ -34,7 +34,7 @@ function PRDetails() {
   const closePR = async () => {
     try {
       const res = await axios.patch(
-        `http://localhost:2929/api/pull-requests/close/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/pull-requests/close/${id}`,
         {},
         { withCredentials: true }
       );
@@ -48,7 +48,7 @@ function PRDetails() {
   const reopenPR = async () => {
     try {
       const res = await axios.patch(
-        `http://localhost:2929/api/pull-requests/reopen/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/pull-requests/reopen/${id}`,
         {},
         { withCredentials: true }
       );
@@ -62,7 +62,7 @@ function PRDetails() {
   const mergePR = async () => {
     try {
       const res = await axios.patch(
-        `http://localhost:2929/api/pull-requests/merge/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/pull-requests/merge/${id}`,
         {},
         { withCredentials: true }
       );
@@ -75,7 +75,7 @@ function PRDetails() {
   const deletePR = async () => {
     try {
       await axios.delete(
-        `http://localhost:2929/api/pull-requests/${id}`,
+        `${import.meta.env.VITE_API_URL}/api/pull-requests/${id}`,
         { withCredentials: true }
       );
       toast.success("Pull Request deleted");

@@ -13,7 +13,7 @@ export const useAuth = create(
     try {
       set({ loading: true, error: null });
       const res = await axios.post(
-        "http://localhost:2929/api/auth/login",userCred,{withCredentials:true}
+        `${import.meta.env.VITE_API_URL}/api/auth/login`,userCred,{withCredentials:true}
       );
       set({
         loading: false,
@@ -35,7 +35,7 @@ export const useAuth = create(
     try {
       set({ loading: true });
 
-      await axios.get("http://localhost:2929/api/auth/logout",{withCredentials:true})
+      await axios.get(`${import.meta.env.VITE_API_URL}/api/auth/logout`,{withCredentials:true})
       
 
       set({

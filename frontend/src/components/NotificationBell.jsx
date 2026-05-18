@@ -29,7 +29,7 @@ const NotificationBell = () => {
     async (id) => {
       try {
         await axios.put(
-          `http://localhost:2929/api/notifications/${id}/read`,
+          `${import.meta.env.VITE_API_URL}/api/notifications/${id}/read`,
           {},
           {
             withCredentials: true

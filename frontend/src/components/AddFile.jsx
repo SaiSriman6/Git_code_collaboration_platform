@@ -32,14 +32,14 @@ function UploadFile() {
    formData.append("repository", repository);
 
    const fileRes = await axios.post(
-    "http://localhost:2929/api/files/upload",
+    `${import.meta.env.VITE_API_URL}/api/files/upload`,
     formData,
     { withCredentials: true }
    );
 
 
    await axios.post(
-    "http://localhost:2929/api/commits",
+    `${import.meta.env.VITE_API_URL}/api/commits`,
     {
      repository: repository,
      message: data.commitMessage,
@@ -105,22 +105,37 @@ function UploadFile() {
        Select File
       </label>
 
-      <input
-       type="file"
-       {...register("file", { required: true })}
-       className="w-full border rounded-lg px-3 py-2"
-      />
+      <input type="file" accept=".txt,.js,.jsx,.ts,.tsx,.json,.md,.html,.css,.png,.jpg,.jpeg,.gif,.webp,.doc,.docx"
+     {...register("file", {
+     required: true,
+     validate: {
+      notPdf: (files) => {
+        const file = files?.[0];
+
+        if (!file) return true;
+
+        return (
+          file.type !== "application/pdf" ||
+          "PDF files are not supported"
+         );
+       },
+      },
+     })}
+      onChange={(e) => {
+      const file = e.target.files[0];
+      if (file?.type === "application/pdf") {
+      toast.error("PDF files are not supported");
+      e.target.value = "";
+     }
+     }}
+     className="w-full border rounded-lg px-3 py-2"
+    />
 
      </div>
-
-
-
      <div>
-
       <label className="block font-semibold mb-1">
        Commit Message
       </label>
-
       <textarea
        placeholder="Enter commit message..."
        {...register("commitMessage", { required: true })}

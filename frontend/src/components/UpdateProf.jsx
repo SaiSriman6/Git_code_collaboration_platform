@@ -22,7 +22,7 @@ function UpdateProf() {
       setError(null);
 
       const res = await axios.patch(
-        "http://localhost:2929/api/auth/update-profile",
+        `${import.meta.env.VITE_API_URL}/api/auth/update-profile`,
         userObj,
         { withCredentials: true }
       );

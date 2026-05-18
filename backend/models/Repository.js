@@ -29,6 +29,11 @@ const repositorySchema = new mongoose.Schema({
     required: true
   },
 
+  branches: {
+  type: [String],
+  default: ["main"]
+  },
+
   collaborators: {
     type: [
       {

@@ -18,7 +18,7 @@ function UpdatePR() {
   const updatePR = async (data) => {
     try {
       await axios.put(
-        `http://localhost:2929/api/pull-requests/${pr._id}`,
+        `${import.meta.env.VITE_API_URL}/api/pull-requests/${pr._id}`,
         data,
         { withCredentials:true }
       );

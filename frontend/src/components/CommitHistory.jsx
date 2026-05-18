@@ -12,7 +12,7 @@ function CommitHistory() {
       try {
         setLoading(true);
         const res = await axios.get(
-          `http://localhost:2929/api/commits/repo/${repo._id}`,
+          `${import.meta.env.VITE_API_URL}/api/commits/repo/${repo._id}`,
           { withCredentials: true }
         );
         setCommits(res.data);
@@ -30,22 +30,34 @@ function CommitHistory() {
         <h1 className="text-2xl font-bold mb-5">
           Commit History
         </h1>
-        {commits.map(commit => (
-          <div
-            key={commit._id}
-            onClick={() =>
-              navigate(`/commit/${commit._id}`)
-            }
-            className="bg-white p-4 mb-3 rounded shadow cursor-pointer hover:shadow-lg"
-          >
-            <p className="font-medium">
-              {commit.message}
-            </p>
-            <p className="text-sm text-gray-500">
-              Author: {commit.author? commit.author.username:"Deleted User"}
-            </p>
-          </div>
-        ))}
+        {!commits.length ? (
+  <div className="bg-white rounded-xl shadow p-8 text-center">
+    <p className="text-gray-500 text-lg">
+      No commits yet
+    </p>
+  </div>
+  ) : ( 
+  commits.map(commit => (
+    <div
+      key={commit._id}
+      onClick={() =>
+        navigate(`/commit/${commit._id}`)
+      }
+      className="bg-white p-4 mb-3 rounded shadow cursor-pointer hover:shadow-lg"
+    >
+      <p className="font-medium">
+        {commit.message}
+      </p>
+      <p className="text-sm text-gray-500">
+        Author: {
+          commit.author
+            ? commit.author.username
+            : "Deleted User"
+        }
+      </p>
+    </div>
+  ))
+)}
       </div>
     </div>
   );

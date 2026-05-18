@@ -14,7 +14,7 @@ function RepoIssues() {
       try {
         setLoading(true);
         const res = await axios.get(
-          `http://localhost:2929/api/issues/repo/${repo._id}`,
+          `${import.meta.env.VITE_API_URL}/api/issues/repo/${repo._id}`,
           { withCredentials:true }
         );
         setIssues(res.data);

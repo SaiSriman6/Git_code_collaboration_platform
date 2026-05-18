@@ -2,48 +2,53 @@ import cloudinary from "../config/cloudinary.js";
 import { File } from "../models/File.js";
 import streamifier from "streamifier";
 import { Commit } from "../models/Commit.js";
+import fs from "fs";
 
 export const uploadFile = async (req, res) => {
+  try {
+    const { repository } = req.body;
 
- try {
-   const { repository } = req.body;
-
-   if (!req.file) {
-     return res.status(400).json({
-       message: "No file uploaded"
+    if (!req.file) {
+      return res.status(400).json({
+        message: "No file uploaded",
       });
     }
-  console.log("Uploading file path:", req.file.path);
 
-  const result = await cloudinary.uploader.upload(
-   req.file.path.replace(/\\/g, "/"),
-   { resource_type: "auto" }
-  );
+    console.log("Uploading:", req.file.path);
 
-    // const result = await cloudinary.uploader.upload(req.file.path);
-    // console.log("fileController")
+    // Upload to Cloudinary
+    const result = await cloudinary.uploader.upload(
+      req.file.path,
+      {
+        resource_type: "auto",
+      }
+    );
 
-  const file = await File.create({
-   repository,
-   name: req.file.originalname,
-   path: req.file.path,
-   fileUrl: result.secure_url,
-   uploadedBy: req.user.userId
-  });
+    // delete local file
+    fs.unlinkSync(req.file.path);
 
-  res.status(201).json({
-   message: "File uploaded successfully",
-   fileId: file._id,
-   repository: file.repository
-  });
+    // Save file in DB
+    const file = await File.create({
+      repository,
+      branch: req.body.branch || "main",
+      name: req.file.originalname,
+      path: req.file.path,
+      fileUrl: result.secure_url,
+      fileType: req.file.mimetype,
+      uploadedBy: req.user.userId,
+    });
 
- } catch (err) {
+    res.status(201).json({
+      message: "File uploaded successfully",
+      file,
+    });
+  } catch (err) {
+    console.log(err);
 
-  res.status(500).json({
-   message: err.message
-  });
-
- }
+    res.status(500).json({
+      message: err.message,
+    });
+  }
 };
 
 
@@ -67,14 +72,13 @@ export const uploadMultipleFiles = async (req, res) => {
         fileName: file.originalname,
         fileUrl: result.secure_url
       });
-
     }
-
+  // delete local file
+  fs.unlinkSync(req.file.path);  
     res.json({
       message: "Files uploaded successfully",
       files: uploadedFiles
     });
-
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -190,6 +194,10 @@ export const updateFile = async (req, res) => {
 
   // update DB with new file URL
   file.fileUrl = result.secure_url;
+
+  if (!file.fileType) {
+  file.fileType = "text/plain";
+}
 
   await file.save();
   await Commit.create({
