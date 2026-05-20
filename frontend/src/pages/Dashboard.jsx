@@ -113,25 +113,34 @@ function Dashboard() {
 
   {/* Empty State */}
   {repos.length === 0 ? (
-    <div className="bg-[#161b22] border border-dashed border-[#30363d] rounded-3xl shadow-xl p-16 text-center">
-      
-      <div className="text-7xl mb-5">📂</div>
+    <div className="bg-white border border-gray-200 rounded-3xl shadow-xl p-16 text-center">
+  
+  <h2 className="text-3xl font-bold text-gray-800 mb-3">
+    No repositories found
+  </h2>
 
-      <h2 className="text-3xl font-bold text-white mb-3">
-        No repositories found
-      </h2>
+  <p className="text-gray-500 mb-8">
+    Create your first repository and start building your next big idea.
+  </p>
 
-      <p className="text-gray-400 mb-8">
-        Create your first repository and start building your next big idea.
-      </p>
-
-      <button
-        onClick={toNewRepo}
-        className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 px-7 py-3 rounded-xl font-semibold shadow-lg hover:shadow-cyan-500/30 transition-all duration-300"
-      >
-        Create Repository
-      </button>
-    </div>
+  <button
+    onClick={toNewRepo}
+    className="
+      bg-gradient-to-r
+      bg-blue-500
+      hover:bg-blue-600
+      text-white
+      px-7 py-3
+      rounded-xl
+      font-semibold
+      shadow-lg
+      hover:shadow-blue-500/20
+      transition-all duration-300
+    "
+  >
+    Create Repository
+    </button>
+   </div>
   ) : (
     <div className="grid gap-5">
       {repos.map((repo) => (
