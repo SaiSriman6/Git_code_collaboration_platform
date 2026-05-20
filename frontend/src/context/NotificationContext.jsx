@@ -41,7 +41,7 @@ export const NotificationProvider =
         const res =
           await axios.get(
 
-            "http://localhost:2929/api/notifications",
+            `${import.meta.env.VITE_API_URL}/api/notifications`,
 
             {
               withCredentials: true
