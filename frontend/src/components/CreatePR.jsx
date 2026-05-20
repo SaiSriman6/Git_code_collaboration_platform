@@ -76,48 +76,67 @@ function CreatePullRequest() {
 
   return (
 
-    <div className="min-h-screen bg-gray-100 flex justify-center items-center px-4">
+  <div className="min-h-screen bg-[#f4f7fb] flex items-center justify-center p-6">
 
-      <form
-        onSubmit={handleSubmit(createPR)}
-        className="bg-white w-full max-w-xl rounded-2xl shadow-lg p-8"
-      >
+    <form
+      onSubmit={handleSubmit(createPR)}
+      className="
+        w-full max-w-3xl
+        bg-white rounded-3xl
+        shadow-xl border border-gray-100
+        overflow-hidden
+      "
+    >
 
-        <h2 className="text-3xl font-bold mb-2">
+      {/* Header */}
+      <div className="bg-gradient-to-r bg-blue-500 px-8 py-10 text-white">
+
+        <h2 className="text-4xl font-extrabold">
           Create Pull Request
         </h2>
 
-        <p className="text-gray-500 mb-6">
-          Open a pull request for{" "}
-          <span className="font-semibold">
+        <p className="text-green-100 mt-3 text-lg">
+          Open a pull request for
+          <span className="font-bold ml-2">
             {repo?.name}
           </span>
         </p>
 
+      </div>
+
+      {/* Form Body */}
+      <div className="p-8 space-y-7">
+
+        {/* Error */}
         {error && (
-          <div className="bg-red-100 text-red-600 px-4 py-2 rounded mb-4">
+          <div className="bg-red-100 text-red-600 p-4 rounded-2xl font-medium">
             {error}
           </div>
         )}
 
         {/* PR Title */}
-        <div className="mb-4">
+        <div>
 
-          <label className="block mb-2 font-medium">
+          <label className="block text-gray-700 font-semibold mb-3">
             Pull Request Title
           </label>
 
           <input
             type="text"
-            placeholder="Enter PR title"
-            className="border border-gray-300 p-3 w-full rounded-lg outline-none focus:ring-2 focus:ring-green-500"
+            placeholder="Enter pull request title"
             {...register("title", {
               required: "Title is required"
             })}
+            className="
+              w-full px-5 py-3
+              rounded-2xl border border-gray-200
+              bg-gray-50
+              focus:outline-none focus:ring-2 focus:ring-blue-500
+            "
           />
 
           {errors.title && (
-            <p className="text-red-500 text-sm mt-1">
+            <p className="text-red-500 text-sm mt-2">
               {errors.title.message}
             </p>
           )}
@@ -125,75 +144,96 @@ function CreatePullRequest() {
         </div>
 
         {/* Description */}
-        <div className="mb-4">
+        <div>
 
-          <label className="block mb-2 font-medium">
+          <label className="block text-gray-700 font-semibold mb-3">
             Description
           </label>
 
           <textarea
-            rows={5}
+            rows={6}
             placeholder="Describe your changes..."
-            className="border border-gray-300 p-3 w-full rounded-lg outline-none focus:ring-2 focus:ring-green-500"
             {...register("description")}
+            className="
+              w-full px-5 py-4
+              rounded-2xl border border-gray-200
+              bg-gray-50 resize-none
+              focus:outline-none focus:ring-2 focus:ring-blue-500
+            "
           />
 
         </div>
 
-        {/* Source Branch */}
-        <div className="mb-4">
+        {/* Branches */}
+        <div className="grid md:grid-cols-2 gap-6">
 
-          <label className="block mb-2 font-medium">
-            Source Branch
-          </label>
+          {/* Source Branch */}
+          <div>
 
-          <input
-            type="text"
-            defaultValue="feature"
-            className="border border-gray-300 p-3 w-full rounded-lg outline-none focus:ring-2 focus:ring-green-500"
-            {...register("sourceBranch")}
-          />
+            <label className="block text-gray-700 font-semibold mb-3">
+              Source Branch
+            </label>
+
+            <input
+              type="text"
+              defaultValue="feature"
+              {...register("sourceBranch")}
+              className="
+                w-full px-5 py-3
+                rounded-2xl border border-gray-200
+                bg-gray-50
+                focus:outline-none focus:ring-2 focus:ring-blue-500
+              "
+            />
+
+          </div>
+
+          {/* Target Branch */}
+          <div>
+
+            <label className="block text-gray-700 font-semibold mb-3">
+              Target Branch
+            </label>
+
+            <input
+              type="text"
+              defaultValue="main"
+              {...register("targetBranch")}
+              className="
+                w-full px-5 py-3
+                rounded-2xl border border-gray-200
+                bg-gray-50
+                focus:outline-none focus:ring-2 focus:ring-blue-500
+              "
+            />
+
+          </div>
 
         </div>
 
-        {/* Target Branch */}
-        <div className="mb-6">
-
-          <label className="block mb-2 font-medium">
-            Target Branch
-          </label>
-
-          <input
-            type="text"
-            defaultValue="main"
-            className="border border-gray-300 p-3 w-full rounded-lg outline-none focus:ring-2 focus:ring-green-500"
-            {...register("targetBranch")}
-          />
-
-        </div>
-
-        {/* Submit Button */}
+        {/* Button */}
         <button
           type="submit"
           disabled={loading}
-          className={`w-full py-3 rounded-lg text-white font-semibold transition-all duration-200 ${
-            loading
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-green-600 hover:bg-green-700"
-          }`}
+          className={`
+            w-full py-4 rounded-2xl
+            text-white font-bold text-lg
+            shadow-md transition duration-200
+            ${
+              loading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-green-600 hover:bg-green-700"
+            }
+          `}
         >
-
           {loading
             ? "Creating Pull Request..."
             : "Create Pull Request"}
-
         </button>
-
-      </form>
-
-    </div>
-
-  );
+      </div>
+    </form>
+  </div>
+);
 
 }
 

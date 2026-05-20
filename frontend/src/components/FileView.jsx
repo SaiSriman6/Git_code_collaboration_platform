@@ -10,6 +10,7 @@ const FileView = () => {
 
   const [fileObj, setFileObj] = useState(null);
   const [content, setContent] = useState("");
+  const [error,SetError]=useState(null)
 
   const currentUser = useAuth((state) => state.currentUser);
 
@@ -23,6 +24,7 @@ const FileView = () => {
   ".html",
   ".css",
   ".md",
+
 ];
 const isEditableFile = () => {
   if (!fileObj?.name) return false;
@@ -53,8 +55,9 @@ const isEditableFile = () => {
           const fileContent = await axios.get(fileData.fileUrl);
           setContent(fileContent.data);
         }
-      } catch (error) {
-        console.log("Error loading file:", error);
+      } catch (err) {
+        SetError(err.message);
+        console.log("Error loading file:", err);
       }
     };
 
@@ -79,7 +82,8 @@ const isEditableFile = () => {
 
       toast.success("File deleted and commit created");
       navigate(-1);
-    } catch (error) {
+    } catch (err) {
+      SetError(err.message);
       toast.error("Delete failed");
     }
   };
@@ -101,32 +105,6 @@ const isEditableFile = () => {
         />
       );
     }
-
-    // PDF
-   if (fileObj.fileType === "application/pdf") {
-  return (
-    <div className="flex flex-col items-center justify-center gap-4 py-20">
-      <div className="text-6xl">📄</div>
-
-      <h2 className="text-xl font-semibold">
-        PDF Preview Not Available
-      </h2>
-
-      <p className="text-gray-500">
-        Open or download the PDF file.
-      </p>
-
-      <a
-        href={fileObj.fileUrl}
-        target="_blank"
-        rel="noreferrer"
-        className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg"
-      >
-        Open PDF
-      </a>
-    </div>
-  );
-}
 
     // DOC/DOCX
     if (
@@ -159,6 +137,16 @@ const isEditableFile = () => {
         </pre>
       );
     }
+
+    //error
+    if(error){
+      return(
+        <div className="bg-red-100 text-red-700 p-4 rounded">
+          Failed to load file content. You can download it using the link below.
+          {error && <p className="text-sm">{error}</p>}
+        </div>
+      )
+    }
     // OTHER FILES
     return (
       <a
@@ -171,36 +159,66 @@ const isEditableFile = () => {
       </a>
     );
   };
-  return (
-    <div className="h-full w-full flex flex-col">
+ return (
+  <div className="min-h-screen bg-[#f4f7fb] p-6">
+    <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
       {/* Header */}
-      <div className="flex justify-between items-center px-6 py-3 bg-white shadow-sm">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5 px-8 py-6 border-b bg-gradient-to-r bg-blue-500 text-white">
         <div>
-          <h2 className="text-lg font-semibold">
+          <h2 className="text-3xl font-extrabold break-words">
             {fileObj?.name}
           </h2>
-          <p className="text-xs text-gray-500">
+          <p className="text-blue-100 mt-2">
             Uploaded by {fileObj?.uploadedBy?.username}
           </p>
         </div>
-        {currentUser?.id === fileObj?.uploadedBy?.id && isEditableFile() && (
+        {currentUser?._id === fileObj?.uploadedBy?._id && (
           <div className="flex gap-3">
-            <button onClick={handleEdit}  className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">
-              Edit
-            </button>
-            {currentUser?.id === fileObj?.uploadedBy?.id && (
-                  <button onClick={handleDelete} className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">
-                    Delete
-                  </button>
-              )}     
-            </div>
+            {isEditableFile() && (
+              <button
+                onClick={handleEdit}
+                className="
+                  bg-white text-blue-600
+                  hover:bg-blue-50
+                  px-5 py-2 rounded-2xl
+                  font-semibold shadow-md transition
+                "
+              >
+                Edit
+              </button>
             )}
+            <button
+              onClick={handleDelete}
+              className="
+                bg-red-500 hover:bg-red-600
+                text-white px-5 py-2
+                rounded-2xl font-semibold
+                shadow-md transition
+              "
+            >
+              Delete
+            </button>
+          </div>
+        )}
       </div>
       {/* Content */}
-      <div className="flex-1 overflow-auto px-6 py-4 bg-gray-50">
-        {renderFile()}
+      <div className="p-8 bg-gray-50 min-h-[70vh] overflow-auto">
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+          {/* Error */}
+          {error && (
+            <div className="bg-red-100 text-red-700 p-4 rounded-2xl mb-6">
+              Failed to load file content.
+              <p className="text-sm mt-1">{error}</p>
+            </div>
+          )}
+          {/* File Content */}
+          <div className="overflow-auto">
+            {renderFile()}
+          </div>
+        </div>
       </div>
     </div>
-  );
+  </div>
+);
 };
 export default FileView;

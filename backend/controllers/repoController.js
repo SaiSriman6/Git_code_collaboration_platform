@@ -23,10 +23,13 @@ export const createRepo = async (req, res) => {
 
 export const getRepos = async (req, res) => {
   try {
-    const repos = await Repository.find({visibility:"public"})
+    const userId = req.params.id;
+    const repos = await Repository.find({
+      visibility: "public",
+      owner: { $ne: userId }, // exclude user's own repositories
+    })
       .populate("owner", "username email")
       .populate("collaborators.user", "username email");
-
     res.status(200).json(repos);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -245,83 +248,122 @@ export const changeVisibility = async(req,res) => {
 
 };
 
-
 export const createBranch = async (req, res) => {
-
   try {
-
     const { branchName, sourceBranch } = req.body;
+    // Validate input
+    if (!branchName || !sourceBranch) {
+      return res.status(400).json({
+        success: false,
+        message: "Branch name and source branch are required",
+      });
+    }
+    // Find repository
+    const repo = await Repository.findById(req.params.repoId)
+    .populate("owner", "username email")
+    .populate("collaborators.user", "username email");;
+    if (!repo) {
+      return res.status(404).json({
+        success: false,
+        message: "Repository not found",
+      });
+    }
+    // Check if branch already exists
+    if (repo.branches.includes(branchName)) {
+      return res.status(400).json({
+        success: false,
+        message: "Branch already exists",
+      });
+    }
+    // Check if source branch exists
+    if (!repo.branches.includes(sourceBranch)) {
+      return res.status(400).json({
+        success: false,
+        message: "Source branch not found",
+      });
+    }
 
-    const repo = await Repository.findById(
-      req.params.repoId
-    );
+    // Add branch to repository
+    repo.branches.push(branchName);
+    await repo.save();
 
+    // Get all files from source branch
+    const sourceFiles = await File.find({
+      repository: repo._id,
+      branch: sourceBranch,
+    });
+
+    // Copy files into new branch
+    if (sourceFiles.length > 0) {
+      const copiedFiles = sourceFiles.map((file) => ({
+        repository: repo._id,
+        branch: branchName,
+        name: file.name,
+        path: file.path,
+        fileUrl: file.fileUrl,
+        fileType: file.fileType || "text/plain",
+        uploadedBy: file.uploadedBy,
+      }));
+      await File.insertMany(copiedFiles);
+    }
+    return res.status(201).json({
+     success: true,
+     message: "Branch created successfully",
+     repo
+    });
+    } catch (err) {
+    console.log("Create Branch Error:", err);
+    return res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+//deleting branch
+
+export const deleteBranch = async (req, res) => {
+  try {
+    const { repoId, branchName } = req.params;
+    const repo = await Repository.findById(repoId);
     if (!repo) {
       return res.status(404).json({
         message: "Repository not found"
       });
     }
-
-    // Branch already exists
-    if (
-      repo.branches.includes(branchName)
-    ) {
-      return res.status(400).json({
-        message: "Branch already exists"
+    console.log(repo);
+    console.log(req.user)
+    // only owner can delete branch
+    if (repo.owner.toString() !== req.user.userId.toString()) {
+      return res.status(403).json({
+        message: "Unauthorized"
       });
     }
-
-    // Source branch must exist
-    if (
-      !repo.branches.includes(sourceBranch)
-    ) {
+    // prevent deleting main branch
+    if (branchName === "main") {
       return res.status(400).json({
-        message: "Source branch not found"
+        message: "Cannot delete main branch"
       });
     }
-
-    // Add new branch
-    repo.branches.push(branchName);
-
+    // check branch exists
+    if (!repo.branches.includes(branchName)) {
+      return res.status(404).json({
+        message: "Branch not found"
+      });
+    }
+    // remove branch
+    repo.branches = repo.branches.filter(
+      branch => branch !== branchName
+    );
     await repo.save();
-
-    // Copy files from source branch
-    const sourceFiles = await File.find({
-      repository: repo._id,
-      branch: sourceBranch
-    });
-
-    for (const file of sourceFiles) {
-
-      await File.create({
-
-        repository: repo._id,
-
-        branch: branchName,
-
-        name: file.name,
-
-        path: file.path,
-
-        fileUrl: file.fileUrl,
-
-        uploadedBy: file.uploadedBy
-
-      });
-
-    }
-
-    res.status(201).json({
-      success: true,
-      message: "Branch created successfully",
+    res.status(200).json({
+      message: "Branch deleted successfully",
       branches: repo.branches
     });
-
-  } catch (err) {
-
+  } catch (error) {
+    console.log(error);
     res.status(500).json({
-      success: false,
-      message: err.message
+      message: "Server error"
     });
   }
 };

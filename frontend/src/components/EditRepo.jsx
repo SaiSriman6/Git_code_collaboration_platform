@@ -34,62 +34,85 @@ function EditRepo() {
         return <p>Loading....</p>
     }
   return (
-    
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-6">
- 
-    <div className="bg-white shadow-lg rounded-2xl w-full max-w-lg p-8">
-
-      <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
-        Edit Repository
-      </h1>
-
-      {error && (
-        <p className="bg-red-100 text-red-600 p-2 rounded mb-4 text-sm text-center">
-          {error}
-        </p>
-      )}
-
-      <form onSubmit={handleSubmit(editRepo)} className="space-y-5">
-
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-1">
-            Repository Name
-          </label>
-          <input
-            type="text"
-            defaultValue={state?.repo?.name}
-            {...register("name")}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-1">
-            Description
-          </label>
-          <textarea
-            defaultValue={state?.repo?.description}
-            {...register("description")}
-            minLength={10}
-            maxLength={500}
-            rows="10"
-            className="w-full px-4 py-2 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-
-
-        <button
-          type="submit"
-          className="w-full bg-green-600 text-white py-2 rounded-lg font-semibold hover:bg-green-700 transition duration-200"
-        >
+  <div className="min-h-screen bg-[#f4f7fb] flex items-center justify-center p-6">
+    <div className="w-full max-w-2xl bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+      {/* Header */}
+      <div className="bg-gradient-to-r bg-blue-500 px-8 py-10 text-white">
+        <h1 className="text-4xl font-extrabold">
           Edit Repository
-        </button>
-
-      </form>
-
+        </h1>
+        <p className="mt-2 text-green-100">
+          Update your repository details professionally.
+        </p>
+      </div>
+      {/* Form */}
+      <div className="p-8">
+        {error && (
+          <div className="bg-red-100 text-red-600 p-4 rounded-2xl mb-6 text-sm font-medium">
+            {error}
+          </div>
+        )}
+        <form
+          onSubmit={handleSubmit(editRepo)}
+          className="space-y-7"
+        >
+          {/* Repository Name */}
+          <div>
+            <label className="block text-gray-700 font-semibold mb-3">
+              Repository Name
+            </label>
+            <input
+              type="text"
+              defaultValue={state?.repo?.name}
+              {...register("name")}
+              placeholder="Enter repository name"
+              className="
+                w-full px-5 py-3
+                rounded-2xl border border-gray-200
+                bg-gray-50
+                focus:outline-none focus:ring-2 focus:ring-green-500
+              "
+            />
+          </div>
+          {/* Description */}
+          <div>
+            <label className="block text-gray-700 font-semibold mb-3">
+              Description
+            </label>
+            <textarea
+              defaultValue={state?.repo?.description}
+              {...register("description")}
+              minLength={10}
+              maxLength={500}
+              rows="10"
+              placeholder="Describe your repository..."
+              className="
+                w-full px-5 py-4
+                rounded-2xl border border-gray-200
+                bg-gray-50 resize-none
+                focus:outline-none focus:ring-2 focus:ring-green-500
+              "
+            />
+          </div>
+          {/* Button */}
+          <button
+            type="submit"
+            disabled={loading}
+            className="
+              w-full bg-green-600 hover:bg-green-700
+              text-white py-3 rounded-2xl
+              font-bold text-lg shadow-md
+              transition duration-200
+              disabled:opacity-50
+            "
+          >
+            {loading ? "Updating..." : "Edit Repository"}
+          </button>
+        </form>
+      </div>
     </div>
   </div>
-  )
+);
 }
 
 export default EditRepo

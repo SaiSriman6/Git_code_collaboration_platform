@@ -187,30 +187,29 @@ export const deleteIssue = async (req, res) => {
 
 export const getIncomingIssues = async (req, res) => {
   try {
-
     const { userId } = req.params;
-
     const ownedRepos = await Repository.find({
       owner: userId
     }).select("_id");
-
     const repoIds = ownedRepos.map(repo => repo._id);
-
     const issues = await Issue.find({
       repository: { $in: repoIds }
     })
-      .populate("repository", "name")
+      .populate({
+        path: "repository",
+        select: "name _id owner",
+        populate: {
+          path: "owner",
+          select: "username email"
+        }
+      })
       .populate("author", "username email")
       .sort({ createdAt: -1 });
-
     res.status(200).json(issues);
-
   } catch (error) {
-
     res.status(500).json({
       message: "Failed to fetch issues",
       error: error.message
     });
-
   }
 };

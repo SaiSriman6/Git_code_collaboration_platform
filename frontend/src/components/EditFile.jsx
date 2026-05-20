@@ -66,70 +66,84 @@ const EditFile = () => {
     },
     { withCredentials: true }
    );
-
    toast.success("File updated and commit created");
-
    navigate(`/file-view/${id}`);
-
   } catch (error) {
-
    toast.error("Update failed");
-
   } finally {
-
    setLoading(false);
-
   }
-
  };
-
-
  return (
-
-  <div className="h-full flex flex-col">
-
-   {/* header */}
-   <div className="flex justify-between items-center px-6 py-3 bg-white shadow-sm">
-
-    <h2 className="text-lg font-semibold">
-     Editing: {fileObj?.name}
-    </h2>
-
-    <button
-     onClick={handleSave}
-     disabled={loading}
-     className="bg-green-600 hover:bg-green-700 text-white px-4 py-1 rounded"
-    >
-     {loading ? "Saving..." : "Commit Changes"}
-    </button>
-
-   </div>
-
-
-   {/* editor */}
-   <div className="flex-1 bg-gray-50 p-4 flex flex-col gap-4">
-
-    {/* commit message box */}
-    <textarea
-     placeholder="Enter commit message..."
-     value={commitMessage}
-     onChange={(e) => setCommitMessage(e.target.value)}
-     className="w-full h-20 resize-none outline-none border rounded p-2"
-    />
-
-    {/* file editor */}
-    <textarea
-     value={content}
-     onChange={(e) => setContent(e.target.value)}
-     className="flex-1 resize-none outline-none font-mono text-sm bg-white p-4 border rounded"
-    />
-
-   </div>
-
+  <div className="min-h-screen bg-[#f4f7fb] p-6">
+    <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5 px-8 py-6 bg-gradient-to-r from-green-600 to-emerald-500 text-white">
+        <div>
+          <h2 className="text-3xl font-extrabold break-words">
+            Editing File
+          </h2>
+          <p className="text-green-100 mt-2 text-lg">
+            {fileObj?.name}
+          </p>
+        </div>
+        <button
+          onClick={handleSave}
+          disabled={loading}
+          className="
+            bg-white text-green-700
+            hover:bg-green-50
+            px-6 py-3 rounded-2xl
+            font-bold shadow-md
+            transition duration-200
+            disabled:opacity-50
+          "
+        >
+          {loading ? "Saving..." : "Commit Changes"}
+        </button>
+      </div>
+      {/* Editor Section */}
+      <div className="p-8 space-y-6 bg-gray-50">
+        {/* Commit Message */}
+        <div>
+          <label className="block text-gray-700 font-semibold mb-3">
+            Commit Message
+          </label>
+          <textarea
+            placeholder="Describe your changes..."
+            value={commitMessage}
+            onChange={(e) => setCommitMessage(e.target.value)}
+            className="
+              w-full h-24 resize-none
+              rounded-2xl border border-gray-200
+              bg-white p-4
+              focus:outline-none focus:ring-2 focus:ring-green-500
+            "
+          />
+        </div>
+        {/* File Editor */}
+        <div>
+          <label className="block text-gray-700 font-semibold mb-3">
+            File Content
+          </label>
+          <textarea
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            className="
+              w-full min-h-[70vh]
+              resize-none rounded-2xl
+              border border-gray-200
+              bg-white p-6
+              font-mono text-sm
+              leading-7
+              focus:outline-none focus:ring-2 focus:ring-green-500
+            "
+          />
+        </div>
+      </div>
+    </div>
   </div>
-
- );
-
+);
 };
 
 export default EditFile;

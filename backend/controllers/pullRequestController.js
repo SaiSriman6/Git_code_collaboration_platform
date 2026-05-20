@@ -6,7 +6,7 @@ import {
   sendNotification
 } from "../services/notificationService.js";
 import {User} from "../models/User.js";
-
+import { File } from "../models/File.js";
 
 export const createPR = async (
   req,
@@ -145,51 +145,61 @@ export const getIncomingPullRequests = async (req, res) => {
 
 export const getPRByUser = async(req,res) =>{
   try{
-    console.log("got it");
     const prs=await PullRequest.find({
       author: req.params.id
-    })
+    }).populate("repository","name")
     res.status(200).json(prs);
   }catch(err){
     res.status(500).json({message:err.message});
   }
 }
 
+// merge pr
 export const mergePR = async (req, res) => {
   try {
+
     // Find PR
     const pr = await PullRequest.findById(req.params.id);
+
     if (!pr) {
       return res.status(404).json({
-        message: "Pull request not found"
+        success: false,
+        message: "Pull request not found",
       });
     }
+
     // Prevent duplicate merge
     if (pr.status === "merged") {
       return res.status(400).json({
-        message: "PR already merged"
+        success: false,
+        message: "PR already merged",
       });
     }
-    // Get all files from source branch
+
+    // Get source branch files
     const sourceFiles = await File.find({
       repository: pr.repository,
-      branch: pr.sourceBranch
+      branch: pr.sourceBranch,
     });
-    // Merge each file into target branch
+    // Merge files
     for (const sourceFile of sourceFiles) {
-      // Check if file already exists in target branch
+      // Find matching file in target branch
       const targetFile = await File.findOne({
         repository: pr.repository,
         branch: pr.targetBranch,
-        name: sourceFile.name
+        name: sourceFile.name,
       });
-      // FILE EXISTS -> UPDATE
+      // UPDATE existing file
       if (targetFile) {
         targetFile.fileUrl = sourceFile.fileUrl;
         targetFile.path = sourceFile.path;
+        targetFile.fileType =
+          sourceFile.fileType || "text/plain";
+        targetFile.uploadedBy =
+          sourceFile.uploadedBy;
         await targetFile.save();
       }
-      // FILE DOES NOT EXIST -> CREATE
+      // CREATE new file
       else {
         await File.create({
           repository: pr.repository,
@@ -197,7 +207,9 @@ export const mergePR = async (req, res) => {
           name: sourceFile.name,
           path: sourceFile.path,
           fileUrl: sourceFile.fileUrl,
-          uploadedBy: sourceFile.uploadedBy
+          fileType:
+            sourceFile.fileType || "text/plain",
+          uploadedBy: sourceFile.uploadedBy,
         });
       }
     }
@@ -206,15 +218,17 @@ export const mergePR = async (req, res) => {
     pr.mergedAt = new Date();
     pr.mergedBy = req.user.id;
     await pr.save();
-    res.status(200).json({
+    await pr.populate("author", "username _id");
+    return res.status(200).json({
       success: true,
       message: "Pull request merged successfully",
-      pr
+      pr,
     });
   } catch (err) {
-    res.status(500).json({
+    console.log("Merge PR Error:", err);
+    return res.status(500).json({
       success: false,
-      message: err.message
+      message: err.message,
     });
   }
 };
@@ -223,12 +237,11 @@ export const getPRById = async (req, res) => {
   try {
     const pr = await PullRequest.findById(req.params.id)
       .populate("author", "username _id")
-
     if (!pr) {
       return res.status(404).json({ message: "Pull request not found" });
     }
+    res.json({success: true,pr,});
 
-    res.json(pr);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -244,8 +257,8 @@ export const closePR = async (req, res) => {
 
     pr.status = "closed";
     await pr.save();
-
-    res.json(pr);
+    await pr.populate("author", "username _id");
+    res.json({success: true, pr,});
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -261,8 +274,8 @@ export const reopenPR = async (req, res) => {
 
     pr.status = "open";
     await pr.save();
-
-    res.json(pr);
+    await pr.populate("author", "username _id");
+    res.json({success: true,pr});
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -282,8 +295,9 @@ export const updatePR = async (req, res) => {
     if (description) pr.description = description;
 
     await pr.save();
+    await pr.populate("author", "username _id");
 
-    res.json(pr);
+   res.json({success: true,pr,});
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

@@ -56,14 +56,6 @@ function IssueDetails() {
   const canManageIssueStatus =
     isRepoOwner || isCollaborator;
     
-  const toCreateBranch = () => {
-  navigate(
-    "/create-branch",
-    {
-      state: { repo }
-    }
-  );
-};
   const updateIssue = async (data) => {
 
     try {
@@ -131,79 +123,166 @@ function IssueDetails() {
   };
 
   const deleteIssue = async () => {
-
     try {
-
       await axios.delete(
         `${import.meta.env.VITE_API_URL}/api/issues/${id}`,
         { withCredentials: true }
       );
-
       toast.success("Issue deleted");
-
       navigate(-1);
-
     } catch {
-
       toast.error("Failed to delete issue");
-
     }
-
   };
 
-  return (
+ return (
 
-    <div className="min-h-screen bg-gray-100 py-10">
+  <div className="min-h-screen bg-[#f4f7fb] py-10 px-6">
 
-      <div className="max-w-3xl mx-auto space-y-6">
+    <div className="max-w-4xl mx-auto space-y-6">
 
-        {/* ISSUE DETAILS */}
-        <form
-          onSubmit={handleSubmit(updateIssue)}
-          className="bg-white p-8 rounded-xl shadow-md"
-        >
+      {/* ISSUE DETAILS */}
+      <form
+        onSubmit={handleSubmit(updateIssue)}
+        className="bg-white border border-gray-200 rounded-3xl shadow-sm overflow-hidden"
+      >
 
-          <h2 className="text-2xl font-bold mb-5">
-            Issue Details
-          </h2>
+        {/* Header */}
+        <div className="px-8 py-6 border-b border-gray-100">
 
-          {/* TITLE */}
-          <input
-            className={`border p-3 w-full mb-4 rounded ${
-              !canEditIssue
-                ? "bg-gray-100 cursor-not-allowed"
-                : ""
-            }`}
-            {...register("title")}
-            readOnly={!canEditIssue}
-          />
+          <div className="flex items-center justify-between flex-wrap gap-4">
 
-          {/* DESCRIPTION */}
-          <textarea
-            rows={6}
-            className={`border p-3 w-full mb-4 rounded ${
-              !canEditIssue
-                ? "bg-gray-100 cursor-not-allowed"
-                : ""
-            }`}
-            {...register("description")}
-            readOnly={!canEditIssue}
-          />
+            <div>
 
-          {/* ACTION BUTTONS */}
+              <h2 className="text-3xl font-bold text-gray-800">
+                Issue Details
+              </h2>
+
+              <p className="text-gray-500 mt-1">
+                View and manage issue information
+              </p>
+
+            </div>
+
+            {/* Status */}
+            <span
+              className={`
+                px-4
+                py-2
+                rounded-full
+                text-sm
+                font-semibold
+                ${
+                  issue.status === "open"
+                    ? "bg-green-100 text-green-700"
+                    : "bg-red-100 text-red-700"
+                }
+              `}
+            >
+              {issue.status}
+            </span>
+
+          </div>
+
+        </div>
+
+        {/* Content */}
+        <div className="p-8">
+
+          {/* Title */}
+          <div className="mb-6">
+
+            <label className="block text-sm font-semibold text-gray-700 mb-3">
+              Issue Title
+            </label>
+
+            <input
+              className={`
+                w-full
+                border
+                border-gray-300
+                rounded-2xl
+                px-5
+                py-4
+                text-gray-800
+                focus:outline-none
+                focus:ring-4
+                focus:ring-blue-100
+                focus:border-blue-500
+                transition-all
+                ${
+                  !canEditIssue
+                    ? "bg-gray-50 cursor-not-allowed"
+                    : ""
+                }
+              `}
+              {...register("title")}
+              readOnly={!canEditIssue}
+            />
+
+          </div>
+
+          {/* Description */}
+          <div className="mb-8">
+
+            <label className="block text-sm font-semibold text-gray-700 mb-3">
+              Description
+            </label>
+
+            <textarea
+              rows={7}
+              className={`
+                w-full
+                border
+                border-gray-300
+                rounded-2xl
+                px-5
+                py-4
+                text-gray-800
+                resize-none
+                focus:outline-none
+                focus:ring-4
+                focus:ring-blue-100
+                focus:border-blue-500
+                transition-all
+                ${
+                  !canEditIssue
+                    ? "bg-gray-50 cursor-not-allowed"
+                    : ""
+                }
+              `}
+              {...register("description")}
+              readOnly={!canEditIssue}
+            />
+
+          </div>
+
+          {/* Buttons */}
           {(canEditIssue ||
             canDeleteIssue ||
             canManageIssueStatus) && (
 
-            <div className="flex gap-3 flex-wrap">
+            <div className="flex flex-wrap gap-4 pt-6 border-t border-gray-100">
 
               {/* UPDATE */}
               {canEditIssue && (
 
                 <button
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg"
+                  className="
+                    bg-blue-600
+                    hover:bg-blue-700
+                    text-white
+                    px-6
+                    py-3
+                    rounded-2xl
+                    font-medium
+                    shadow-sm
+                    hover:shadow-md
+                    transition-all
+                    duration-200
+                  "
                 >
-                  Update
+                  Update Issue
                 </button>
 
               )}
@@ -215,9 +294,21 @@ function IssueDetails() {
                 <button
                   type="button"
                   onClick={closeIssue}
-                  className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg"
+                  className="
+                    bg-blue-600
+                    hover:bg-blue-700
+                    text-white
+                    px-6
+                    py-3
+                    rounded-2xl
+                    font-medium
+                    shadow-sm
+                    hover:shadow-md
+                    transition-all
+                    duration-200
+                  "
                 >
-                  Close
+                  Close Issue
                 </button>
 
               )}
@@ -226,24 +317,61 @@ function IssueDetails() {
               {canManageIssueStatus &&
                 issue.status === "closed" && (
 
-                <button type="button" onClick={reopenIssue}  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
-                  Reopen </button>
+                <button
+                  type="button"
+                  onClick={reopenIssue}
+                  className="
+                    bg-blue-600
+                    hover:bg-blue-700
+                    text-white
+                    px-6
+                    py-3
+                    rounded-2xl
+                    font-medium
+                    shadow-sm
+                    hover:shadow-md
+                    transition-all
+                    duration-200
+                  "
+                >
+                  Reopen Issue
+                </button>
+
               )}
+
               {/* DELETE */}
               {canDeleteIssue && (
-                <button type="button" onClick={deleteIssue} className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
-                  Delete
+
+                <button
+                  type="button"
+                  onClick={deleteIssue}
+                  className="
+                    bg-blue-600
+                    hover:bg-blue-700
+                    text-white
+                    px-6
+                    py-3
+                    rounded-2xl
+                    font-medium
+                    shadow-sm
+                    hover:shadow-md
+                    transition-all
+                    duration-200
+                  "
+                >
+                  Delete Issue
                 </button>
               )}
             </div>
           )}
-        </form>
-        {/* COMMENTS */}
-        <div className="bg-white p-6 rounded-xl shadow-md">
-          <CommentSection issueId={issue._id} />
         </div>
+      </form>
+      {/* COMMENTS */}
+      <div className="bg-white border border-gray-200 rounded-3xl shadow-sm p-8">
+        <CommentSection issueId={issue._id} />
       </div>
     </div>
-  );
+  </div>
+);
 }
 export default IssueDetails;

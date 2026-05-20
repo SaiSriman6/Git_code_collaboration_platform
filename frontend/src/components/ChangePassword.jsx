@@ -1,89 +1,99 @@
-import React,{useState} from 'react'
-import { useForm } from 'react-hook-form'
-import axios from 'axios'
-import {toast} from 'react-hot-toast'
-import { useNavigate } from 'react-router'
-import { useAuth } from '../store/useAuth'
-
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import axios from "axios";
+import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router";
+import { useAuth } from "../store/useAuth";
 function ChangePassword() {
-  let {register,handleSubmit}=useForm();
-  let navigate=useNavigate();
-  let [loading,setLoading]=useState(false);
-  let [error,setError]=useState(null);
-  let currentUser=useAuth(state=>state.currentUser)
-
-  const OnChangePass=async(passObj)=>{
-    try{
+  const { register, handleSubmit } = useForm();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const currentUser = useAuth(state => state.currentUser);
+  const OnChangePass = async passObj => {
+    try {
       setLoading(true);
-      let res= await axios.put(`${import.meta.env.VITE_API_URL}/api/auth/change-password`,passObj,{withCredentials:true})
-      if(res.status===200){
+      const res = await axios.put(
+        `${import.meta.env.VITE_API_URL}/api/auth/change-password`,
+        passObj,
+        { withCredentials: true }
+      );
+      if (res.status === 200) {
         toast.success("Password Updated Successfully");
-        navigate(`/profile/${currentUser?.username}`)
+        navigate(`/profile/${currentUser?.username}`);
       }
-    }catch(err){
-      setError(err.message)
+    } catch (err) {
+      setError(err.response?.data?.message || err.message);
+    } finally {
+      setLoading(false);
     }
-  }
-
-  if(loading){
-    return(
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <p className='text-2xl font-bold text-gray-700 animate-pulse'>Loading...</p>
-      </div>
-    )
-  }
-
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-
-      <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md">
-        
-        {/* Title */}
-        <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
-          Change Password
-        </h1>
-
-        {/* Error */}
-        {error && (
-          <p className="bg-red-100 text-red-600 p-2 rounded mb-4 text-sm text-center">
-            {error}
+  };
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#f4f7fb]">
+        <div className="bg-white px-10 py-6 rounded-2xl shadow-lg">
+          <p className="text-2xl font-bold text-blue-600 animate-pulse">
+            Updating Password...
           </p>
-        )}
-
-        {/* Form */}
-        <form onSubmit={handleSubmit(OnChangePass)} className="space-y-4">
-
-          <div>
-            <input
-              type="password"
-              placeholder='Enter your current Password'
-              {...register("currentPassword")}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          <div>
-            <input
-              type="password"
-              placeholder='Enter New Password'
-              {...register("newPassword")}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-200 font-semibold"
-          >
-            Change Password
-          </button>
-
-        </form>
-
+        </div>
       </div>
-
+    );
+  }
+  return (
+    <div className="min-h-screen bg-[#f4f7fb] flex items-center justify-center p-6">
+      <div className="w-full max-w-lg bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+        {/* Header */}
+        <div className="bg-gradient-to-r bg-blue-500 px-8 py-10 text-white">
+          <h1 className="text-4xl font-extrabold">
+            Change Password
+          </h1>
+          <p className="mt-2 text-blue-100">
+            Update your account password securely.
+          </p>
+        </div>
+        {/* Form Section */}
+        <div className="p-8">
+          {error && (
+            <div className="bg-red-100 text-red-600 p-4 rounded-2xl mb-6 text-sm font-medium">
+              {error}
+            </div>
+          )}
+          <form
+            onSubmit={handleSubmit(OnChangePass)}
+            className="space-y-6"
+          >
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2">
+                Current Password
+              </label>
+              <input
+                type="password"
+                placeholder="Enter current password"
+                {...register("currentPassword")}
+                className="w-full px-5 py-3 rounded-2xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2">
+                New Password
+              </label>
+              <input
+                type="password"
+                placeholder="Enter new password"
+                {...register("newPassword")}
+                className="w-full px-5 py-3 rounded-2xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-2xl font-bold text-lg shadow-md transition duration-200"
+            >
+              Update Password
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
-  )
+  );
 }
-
-export default ChangePassword
+export default ChangePassword;

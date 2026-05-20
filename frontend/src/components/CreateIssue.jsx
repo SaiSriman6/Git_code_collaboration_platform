@@ -25,32 +25,98 @@ function CreateIssue() {
     }
   };
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-100">
-      <form
-        onSubmit={handleSubmit(createIssue)}
-        className="bg-white p-8 rounded-xl shadow-md w-full max-w-lg"
-      >
-        <h2 className="text-xl font-bold mb-5">
+
+  <div className="min-h-screen bg-[#f4f7fb] flex items-center justify-center p-6">
+
+    <form
+      onSubmit={handleSubmit(createIssue)}
+      className="
+        w-full max-w-2xl
+        bg-white rounded-3xl
+        shadow-xl border border-gray-100
+        overflow-hidden
+      "
+    >
+
+      {/* Header */}
+      <div className="bg-gradient-to-r bg-blue-500 px-8 py-10 text-white">
+
+        <h2 className="text-4xl font-extrabold">
           Create Issue
         </h2>
-        <input
-          placeholder="Title"
-          className="border p-2 w-full mb-4 rounded"
-          {...register("title")}
-          required
-        />
-        <textarea
-          placeholder="Description"
-          className="border p-2 w-full mb-4 rounded"
-          {...register("description")}
-        />
+
+        <p className="text-green-100 mt-3 text-lg">
+          Report an issue for
+          <span className="font-bold ml-2">
+            {repo?.name}
+          </span>
+        </p>
+
+      </div>
+
+      {/* Form Body */}
+      <div className="p-8 space-y-7">
+
+        {/* Title */}
+        <div>
+
+          <label className="block text-gray-700 font-semibold mb-3">
+            Issue Title
+          </label>
+
+          <input
+            placeholder="Enter issue title"
+            {...register("title")}
+            required
+            className="
+              w-full px-5 py-3
+              rounded-2xl border border-gray-200
+              bg-gray-50
+              focus:outline-none focus:ring-2 focus:ring-blue-500
+            "
+          />
+
+        </div>
+
+        {/* Description */}
+        <div>
+
+          <label className="block text-gray-700 font-semibold mb-3">
+            Description
+          </label>
+
+          <textarea
+            rows={8}
+            placeholder="Describe the issue in detail..."
+            {...register("description")}
+            className="
+              w-full px-5 py-4
+              rounded-2xl border border-gray-200
+              bg-gray-50 resize-none
+              focus:outline-none focus:ring-2 focus:ring-blue-500
+            "
+          />
+
+        </div>
+
+        {/* Submit Button */}
         <button
-          className="bg-green-600 text-white px-4 py-2 rounded w-full"
+          className="
+            w-full py-4 rounded-2xl
+            bg-green-600 hover:bg-green-700
+            text-white font-bold text-lg
+            shadow-md transition duration-200
+          "
         >
           Create Issue
         </button>
-      </form>
-    </div>
-  );
+
+      </div>
+
+    </form>
+
+  </div>
+
+);
 }
 export default CreateIssue;

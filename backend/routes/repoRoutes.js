@@ -11,7 +11,8 @@ import {
   updateCollaboratorRole,
   getCollaborators,
   changeVisibility,
-  createBranch
+  createBranch,
+  deleteBranch
 } from "../controllers/repoController.js";
 
 import { verifyToken } from "../middlewares/verifyToken.js";
@@ -24,7 +25,7 @@ router.post("/", verifyToken, createRepo);
 
 
 // Get all repositories
-router.get("/", getRepos);
+router.get("/:id", getRepos);
 
 // Get repos by owner
 router.get("/repos-owner/:id",verifyToken,ownRepos);
@@ -47,7 +48,7 @@ router.delete("/:id/collaborators/:userId", verifyToken, removeCollaborator);
 
 
 // Get single repository
-router.get("/:id", getRepoById);
+router.get("/:id",verifyToken,getRepoById);
 
 
 // Update repository
@@ -62,5 +63,8 @@ router.patch("/:id/visibility" , verifyToken , changeVisibility)
 
 // create branch
 router.post( "/:repoId/branches",verifyToken,createBranch); 
+
+// delete branch
+router.delete("/:repoId/branches/:branchName",verifyToken,deleteBranch);
 
 export default router;

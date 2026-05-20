@@ -6,8 +6,7 @@ import fs from "fs";
 
 export const uploadFile = async (req, res) => {
   try {
-    const { repository } = req.body;
-
+    const { repository, branch } = req.body;
     if (!req.file) {
       return res.status(400).json({
         message: "No file uploaded",
@@ -30,7 +29,7 @@ export const uploadFile = async (req, res) => {
     // Save file in DB
     const file = await File.create({
       repository,
-      branch: req.body.branch || "main",
+      branch: branch || "main",
       name: req.file.originalname,
       path: req.file.path,
       fileUrl: result.secure_url,
@@ -241,22 +240,17 @@ export const getFileById = async (req, res) => {
 
 
 // get all files of repository
-export const getFilesOfRepo = async(req,res)=>{
-
- try{
-
-  const files=await File.find({
-   repository:req.params.repoId
-  }).populate("uploadedBy","username");
-
-  res.json(files);
-
- }catch(err){
-
-  res.status(500).json({
-   message:err.message
-  });
-
- }
-
+export const getFilesOfRepo = async (req, res) => {
+  try {
+    const { branch } = req.query;
+    const files = await File.find({
+      repository: req.params.repoId,
+      branch: branch || "main"
+    }).populate("uploadedBy");
+    res.status(200).json(files);
+  } catch (err) {
+    res.status(500).json({
+      message: err.message
+    });
+  }
 };
