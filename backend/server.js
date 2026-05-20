@@ -25,7 +25,10 @@ const app = express();
 // ================= MIDDLEWARE =================
 
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin:[
+    "http://localhost:5173",
+    "https://git-code-collaboration-platform-nine.vercel.app"
+  ], 
   credentials: true
 }));
 
