@@ -14,25 +14,28 @@ export const createPR = async (
 ) => {
   try {
     const {
-      repository,
-      title,
-      description,
-      commits
-    } = req.body;
+  repository,
+  title,
+  description,
+  commits,
+  sourceBranch,
+  targetBranch
+  } = req.body;
     const sender =
     await User.findById(
     req.user.userId
   );
   console.log(sender)
     // CREATE PR
-    const pr =
-      await PullRequest.create({
-        repository,
-        title,
-        description,
-        commits,
-        author: sender._id
-      });
+    const pr = await PullRequest.create({
+     repository,
+    title,
+    description,
+    commits,
+    sourceBranch,
+    targetBranch,
+    author: sender._id
+  });
     // GET REPO
     const repo =
       await Repository.findById(

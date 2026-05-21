@@ -60,19 +60,22 @@ function PRDetails() {
     }
   };
   const mergePR = async () => {
-    try {
-      const res = await axios.patch(
-        `${import.meta.env.VITE_API_URL}/api/pull-requests/merge/${id}`,
-        {},
-        { withCredentials: true }
-      );
-      setPr(res.data);
-      toast.success("Pull Request merged");
-       navigate(-1);
-    } catch {
-      toast.error("Merge failed");
-    }
-  };
+  try {
+    const res = await axios.patch(
+      `${import.meta.env.VITE_API_URL}/api/pull-requests/merge/${id}`,
+      {},
+      { withCredentials: true }
+    );
+    setPr(res.data.pr);
+    toast.success("Pull Request merged");
+    navigate(-1);
+  } catch (err) {
+    toast.error(
+      err?.response?.data?.message ||
+      "Merge failed"
+    );
+  }
+};
   const deletePR = async () => {
     try {
       await axios.delete(

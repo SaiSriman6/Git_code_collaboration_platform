@@ -22,15 +22,20 @@ function CreatePullRequest() {
   const [error, setError] = useState("");
 
   const {
-    handleSubmit,
-    register,
-    formState: { errors }
-  } = useForm();
+  handleSubmit,
+  register,
+  formState: { errors }
+   } = useForm({
+  defaultValues: {
+    sourceBranch: "",
+    targetBranch: "main"
+   }
+  });
 
   const createPR = async (prObj) => {
 
     try {
-
+      console.log(prObj)
       setLoading(true);
 
       setError("");
@@ -176,8 +181,10 @@ function CreatePullRequest() {
 
             <input
               type="text"
-              defaultValue="feature"
-              {...register("sourceBranch")}
+               placeholder="Enter source branch"
+               {...register("sourceBranch", {
+                 required: "Source branch is required"
+               })}
               className="
                 w-full px-5 py-3
                 rounded-2xl border border-gray-200
@@ -197,7 +204,7 @@ function CreatePullRequest() {
 
             <input
               type="text"
-              defaultValue="main"
+              placeholder="Enter target branch"
               {...register("targetBranch")}
               className="
                 w-full px-5 py-3
@@ -208,7 +215,6 @@ function CreatePullRequest() {
             />
 
           </div>
-
         </div>
 
         {/* Button */}
