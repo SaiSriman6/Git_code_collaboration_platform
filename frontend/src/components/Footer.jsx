@@ -24,45 +24,7 @@ function Footer() {
 
           {/* Navigation */}
           <div>
-            <h2 className="text-lg font-semibold mb-4">
-              Navigation
-            </h2>
-
-            <div className="flex flex-col gap-3 text-gray-400">
-              
-              <a
-                href="/dashboard"
-                className="hover:text-blue-400 transition"
-              >
-                Dashboard
-              </a>
-
-              <a
-                href="/repos"
-                className="hover:text-blue-400 transition"
-              >
-                Repositories
-              </a>
-
-              <a
-                href="/issues"
-                className="hover:text-blue-400 transition"
-              >
-                Issues
-              </a>
-              <a
-                href="/pullrequests"
-                className="hover:text-blue-400 transition"
-              >
-                Pull Requests
-              </a>
-            </div>
-          </div>
-          {/* Contact */}
-          <div>
-            <h2 className="text-lg font-semibold mb-4">
-              Contact
-            </h2>
+            
 
             <div className="space-y-3 text-gray-400">
               <p>support@collabplatform.com</p>
