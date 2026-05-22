@@ -1,9 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-
 import RootLayout from "./layouts/RootLayout";
 import DashboardLayout from "./layouts/DashBoard";
-
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -11,12 +9,9 @@ import Dashboard from "./pages/Dashboard";
 import Repository from "./pages/Repository";
 import PullRequests from "./pages/PullRequests";
 import Issues from "./pages/Issues";
-import Features from "./pages/Features";
 import Profile from "./pages/Profile";
 import Repositories from "./pages/Repositories";
-
 import ProtectedRoute from "./routes/ProtectedRoute";
-
 import ChangePassword from "./components/ChangePassword";
 import AddRepo from "./components/AddRepo";
 import UpdateProf from "./components/UpdateProf";
@@ -53,11 +48,7 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register />,
-      },
-      {
-        path: "/features",
-        element: <Features />,
-      },
+      }
     ],
   },
 

@@ -26,7 +26,10 @@ export const getRepos = async (req, res) => {
     const userId = req.params.id;
     const repos = await Repository.find({
       visibility: "public",
-      owner: { $ne: userId }, // exclude user's own repositories
+      // not owned by current user
+      owner: { $ne: userId },
+      // current user should not be collaborator
+      "collaborators.user": { $ne: userId },
     })
       .populate("owner", "username email")
       .populate("collaborators.user", "username email");
@@ -36,16 +39,26 @@ export const getRepos = async (req, res) => {
   }
 };
 
-export const ownRepos=async(req,res) =>{
-   try{
-    const repos= await Repository.find({owner:req.params.id})
+
+export const ownRepos = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const repos = await Repository.find({
+      $or: [
+        { owner: userId },
+        { "collaborators.user": userId }
+      ]
+    })
       .populate("owner", "username email")
       .populate("collaborators.user", "username email");
-    res.status(200).json({message:"repositories are",payload:repos})
-   }catch(err){
-    res.status(500).json({message:err.message})
-   }
-}
+    res.status(200).json({
+      message: "repositories are",
+      payload: repos
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 
 export const getRepoById = async (req, res) => {
   try {
