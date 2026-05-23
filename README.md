@@ -66,7 +66,7 @@ A full-stack Git-style code collaboration platform built with the MERN stack. Th
 ---
 
 # Project Structure
-## Collaboration Platform
+## Collaboration 
 
 ```bash
 Git_Project/
