@@ -100,8 +100,8 @@ Git_Project/
 ## 1. Clone the Repository
 
 ```bash
-git clone <your-repository-url>
-cd Git_Project
+git clone https://github.com/SaiSriman6/Git_code_collaboration_platform.git
+cd Git_code_collaboration_platform
 ```
 
 ---
