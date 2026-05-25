@@ -335,3 +335,5 @@ Content-Type: application/json
 }
 
 
+### Delete Comment
+DELETE {{baseUrl}}/comments/69c04152d0c15831bad5b18f
