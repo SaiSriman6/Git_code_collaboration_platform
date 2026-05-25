@@ -304,17 +304,16 @@ DELETE {{baseUrl}}/pull-requests/69be84939e27d6d3d605ed83
 GET {{baseUrl}}/issues/incoming/69b8f480e2f3a64283339171
 
 
-
 # ### 💬 COMMENTS ------------------------
 
-# ### Add Comment
-# POST {{baseUrl}}/comments
-# Content-Type: application/json
+### Add Comment
+POST {{baseUrl}}/comments
+Content-Type: application/json
 
-# {
-#   "issue": "{{issueId}}",
-#   "content": "I will fix this bug"
-# }
+{
+  "issue": "69c040d7d0c15831bad5b175",
+  "content": "I will fix this bug"
+}
 
 
 ### Get Comments
@@ -323,18 +322,16 @@ GET {{baseUrl}}/comments/issue/69c040d7d0c15831bad5b175
 ### Get Comments of PR
 GET {{baseUrl}}/comments/pr/69bed167588a759f2fdde520
 
-# ### Get Comment
-# GET {{baseUrl}}/comments/id/{{commentId}}
+### Get Comment
+GET {{baseUrl}}/comments/id/69c04152d0c15831bad5b18f
 
 
-# ### Update Comment
-# PATCH {{baseUrl}}/comments/{{commentId}}
-# Content-Type: application/json
+### Update Comment
+PATCH {{baseUrl}}/comments/69c04152d0c15831bad5b18f
+Content-Type: application/json
 
-# {
-#   "content": "Updated comment"
-# }
+{
+  "content": "Updated comment"
+}
 
 
-# ### Delete Comment
-# DELETE {{baseUrl}}/comments/{{commentId}}
