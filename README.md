@@ -6,11 +6,11 @@ A full-stack Git-style code collaboration platform built with the MERN stack. Th
 
 ### Authentication & User Management
 
-* User registration and login
-* Secure authentication using JWT
-* Protected routes
-* Profile management
-* Change password functionality
+* User Registration and Login
+* Secure Authentication using JWT
+* Protected Routes
+* Profile Management
+* Change Password Functionality
 
 ### Repository Management
 
