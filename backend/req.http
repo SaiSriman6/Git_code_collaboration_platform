@@ -253,8 +253,6 @@ Content-Type: application/json
 }
 
 
-### Delete PR
-DELETE {{baseUrl}}/pull-requests/69be84939e27d6d3d605ed83
 
 
 
