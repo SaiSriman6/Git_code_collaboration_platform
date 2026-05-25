@@ -52,7 +52,12 @@ Content-Type: application/json
 }
 
 
+### Logout
+GET {{baseUrl}}/auth/logout
 
+
+### Get All Users
+GET {{baseUrl}}/auth/users
 
 
 
