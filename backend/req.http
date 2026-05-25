@@ -124,8 +124,7 @@ Content-Type: application/json
 }
 
 
-### Remove Collaborator
-DELETE {{baseUrl}}/repos/69b7cc932a97f90866c47f33/collaborators/69b7cc622a97f90866c47f2b
+
 
 
 
