@@ -296,8 +296,7 @@ DELETE {{baseUrl}}/pull-requests/69be84939e27d6d3d605ed83
 # }
 
 
-# ### Delete Issue
-# DELETE {{baseUrl}}/issues/{{issueId}}
+
 
 
 ### Incoming Issue
