@@ -63,15 +63,7 @@ GET {{baseUrl}}/auth/users
 
 ### 📦 REPOSITORIES --------------------
 
-### Create Repo
-POST {{baseUrl}}/repos
-Content-Type: application/json
 
-{
-  "name": "sample-repo1",
-  "description": "Sample desc1",
-  "visibility": "public"
-}
 
 
 ### Get All Repos
